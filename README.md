@@ -2,9 +2,9 @@
 
 This small [Typst](https://typst.app/) package handles the typesetting of [Wick contractions](https://en.wikipedia.org/wiki/Wick%27s_theorem). Read `docs.pdf` for more information. 
 
-<div style="text-align: center; margin-top: 40px; margin-bottom: 15px;">
-<img src="images/example.png" width="500" alt="Example"/>
-</div>
+<p align="center">
+    <img src="images/example.png" width="500" alt="Example"/>
+</p>
 
 ```typ
 $ :
