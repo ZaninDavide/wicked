@@ -14,7 +14,8 @@
     id: 0, 
     pos: bottom, 
     dx: 0pt, 
-    dy: auto,     // 0.5em, 
+    dy: 0pt, 
+    dist: auto,     // 0.5em, 
     offset: auto, // 0.25em, 
     stroke: auto, // 0.5pt, 
     flat: auto,   // true, 
@@ -35,7 +36,7 @@
         if mt.value.size == none { return false }
         if mt.value.size.width == none { return false }
         if mt.value.size.height == none { return false }
-        if mt.value.dy == none { return false }
+        if mt.value.dist == none { return false }
         if mt.value.offset == none { return false }
         if mt.value.stroke == none { return false }
         if mt.value.flat == none { return false }
@@ -50,6 +51,7 @@
         "pos": pos,
         "dx": dx, 
         "dy": dy, 
+        "dist": dist, 
         "offset": offset, 
         "stroke": stroke, 
         "flat": flat,
@@ -79,35 +81,40 @@
                else if pos == horizon { 0 }
                else { 0 }
 
-    let max_height = calc.max(size1.height, size2.height)
-
     // Shared options
     let options = (
-        dy: choose_shared_option(first.value.dy, dy, 0.5em),
+        dist: choose_shared_option(first.value.dist, dist, 0.5em),
         offset: choose_shared_option(first.value.offset, offset, 0.25em),
         stroke: choose_shared_option(first.value.stroke, stroke, 0.5pt),
         flat: choose_shared_option(first.value.flat, flat, true),
     )
 
-    options.dy = if type(id) == int { options.dy * (1 + id / 2.0) } else{ options.dy }
+    options.dist = if type(id) == int { options.dist * (1 + id / 2.0) } else{ options.dist }
+
+    let vertical1 = first.value.dy + factor*size1.height
+    let vertical2 = dy + factor*size2.height
+    if options.flat {
+        vertical1 = calc.max(vertical1, vertical2) 
+        vertical2 = vertical1
+    }
 
     // 0.25em is require to adjust for the metadata placement
     let vertices = (
         (
-            pos1.x + sign*first.value.dx + size1.width/2.0, 
-            pos1.y + 0.25em + sign*(options.offset + factor*size1.height)
+            pos1.x + first.value.dx + size1.width/2.0, 
+            pos1.y + 0.25em + sign * (options.offset + first.value.dy + factor*size1.height)
         ),
         (
-            pos1.x + sign*first.value.dx + size1.width/2.0, 
-            pos1.y + 0.25em + sign*(options.dy + factor*(if options.flat {max_height} else {size1.height}))
+            pos1.x + first.value.dx + size1.width/2.0, 
+            pos2.y + 0.25em + sign * (options.dist + vertical1)
         ),
         (
-            pos2.x + sign*dx + size2.width/2.0, 
-            pos2.y + 0.25em + sign*(options.dy + factor*(if options.flat {max_height} else {size2.height}))
+            pos2.x + dx + size2.width/2.0,
+            pos2.y + 0.25em + sign * (options.dist + vertical2)
         ),
         (
-            pos2.x + sign*dx + size2.width/2.0, 
-            pos2.y + 0.25em + sign*(options.offset + factor*size2.height)
+            pos2.x + dx + size2.width/2.0, 
+            pos2.y + 0.25em + sign * (options.offset + dy + factor*size2.height)
         )
     )
 

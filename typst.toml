@@ -2,7 +2,7 @@
 name = "wick"
 version = "0.1.0"
 compiler = "0.12.0"
-entrypoint = "src/wick.typ"
+entrypoint = "src/lib.typ"
 authors = ["Davide Zanin <https://github.com/ZaninDavide>"]
 license = "MIT"
 description = "A flexible and easy-to-use package for typesetting Wick contractions."
