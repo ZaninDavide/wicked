@@ -1,7 +1,7 @@
 #import "src/lib.typ": wick
 
 #set document(
-  title: "Typst 'wick' package docs",
+  title: "Typst 'wicked' package docs",
   author: "Davide Zanin",
 )
 #set text(size: 12pt)
@@ -26,7 +26,7 @@
 
 #set box(width: 20pt, height: 20pt, radius: 2pt)
 
-= wick
+= wicked
 
 #text(size: 15pt)[$
 :
@@ -70,7 +70,7 @@ reasons."
 In the examples which follow we must suppose that the following preamble has been used.
 
 ```
-#import "src/lib.typ": wick
+#import "@preview/wicked:0.1.0": wick
 
 // Only used to make the examples shorter
 #set box(width: 20pt, height: 20pt, radius: 2pt)
@@ -208,6 +208,6 @@ table(columns: 4, inset: 10pt, stroke: 0.5pt, align: left,
   [`dist`], [`length`], [`auto` is `0.5em`], [yes],     
   [`offset`], [`length`], [`auto` is `0.25em`], [yes], 
   [`stroke`], [`stroke`], [`auto` is `0.5pt`], [yes], 
-  [`flat`], [`boolean`], [`auto` is `true`], [yes],  
+  [`flat`], [`bool`], [`auto` is `true`], [yes],  
   [`content`], [`content`], [-], [-],  
 ))
