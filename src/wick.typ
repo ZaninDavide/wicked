@@ -28,6 +28,9 @@
     // Find all contraction points up to here
     let points = query(selector(metadata).before(h)).filter(mt => {
         if not mt.has("value") { return false }
+        // check if `metadata.value` is in form `(type: "wicked", ...)`
+        if type(mt.value) != dictionary { return false }
+        if not mt.value.keys().contains("type") { return false }
         if mt.value.type != "wick" { return false }
         // Contractables
         if mt.value.id != id { return false }
