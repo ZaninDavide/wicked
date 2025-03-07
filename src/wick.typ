@@ -15,34 +15,77 @@
     pos: bottom, 
     dx: 0pt, 
     dy: 0pt, 
-    dist: auto,     // 0.5em, 
+    dist: auto,   // 0.5em, 
     offset: auto, // 0.25em, 
     stroke: auto, // 0.5pt, 
     flat: auto,   // true, 
     content
 ) = context {
-    assert.eq(pos.axis(), "vertical", message: "expected a vertical alignment")
+    // Checking if all data types are correct
+    assert(
+        type(pos) == alignment, 
+        message: "expected `alignment` type for `pos`, found `" + str(type(pos)) + "`"
+    )
+    assert(
+        type(dx) == length, 
+        message: "expected `length` type for `dx`, found `" + str(type(dx)) + "`"
+    )
+    assert(
+        type(dy) == length, 
+        message: "expected `length` type for `dy`, found `" + str(type(dy)) + "`"
+    )
+    assert(
+        type(dist) == length or dist == auto, 
+        message: "expected `length` or `auto` type for `dist`, found `" + str(type(dist)) + "`"
+    )
+    assert(
+        type(offset) == length or offset == auto, 
+        message: "expected `length` or `auto` type for `offset`, found `" + str(type(offset)) + "`"
+    )
+    assert(
+        type(flat) == bool or flat == auto, 
+        message: "expected `bool` or `auto` type for `flat`, found `" + str(type(flat)) + "`"
+    )
+
+    assert.eq(pos.axis(), "vertical", message: "expected a vertical alignment for `pos`, found `" + str(repr(pos)) + "`")
     
     let h = here()
 
     // Find all contraction points up to here
     let points = query(selector(metadata).before(h)).filter(mt => {
         if not mt.has("value") { return false }
-        // check if `metadata.value` is in form `(type: "wicked", ...)`
+        
+        // Check if `metadata.value` is in the form `(type: "wicked", ...)`
         if type(mt.value) != dictionary { return false }
         if not mt.value.keys().contains("type") { return false }
         if mt.value.type != "wick" { return false }
-        // Contractables
+        
+        // Check the conditions required for a contraction to happen
+        if not mt.value.keys().contains("id") { return false }
+        if not mt.value.keys().contains("pos") { return false }
         if mt.value.id != id { return false }
         if mt.value.pos != pos { return false }
+        
         // Sanity checks
-        if mt.value.size == none { return false }
-        if mt.value.size.width == none { return false }
-        if mt.value.size.height == none { return false }
-        if mt.value.dist == none { return false }
-        if mt.value.offset == none { return false }
-        if mt.value.stroke == none { return false }
-        if mt.value.flat == none { return false }
+        if type(mt.value.pos) != alignment { return false }
+        if not mt.value.keys().contains("size") { return false }
+        if type(mt.value.size) != dictionary { return false }
+        if not mt.value.size.keys().contains("width") { return false }
+        if type(mt.value.size.width) != length { return false }
+        if not mt.value.size.keys().contains("height") { return false }
+        if type(mt.value.size.height) != length { return false }
+        if not mt.value.keys().contains("dx") { return false }
+        if type(mt.value.dx) != length { return false }
+        if not mt.value.keys().contains("dy") { return false }
+        if type(mt.value.dy) != length { return false }
+        if not mt.value.keys().contains("dist") { return false }
+        if type(mt.value.dist) != length and mt.value.dist != auto { return false }
+        if not mt.value.keys().contains("offset") { return false }
+        if type(mt.value.offset) != length and mt.value.offset != auto { return false }
+        if not mt.value.keys().contains("stroke") { return false }
+        if not mt.value.keys().contains("flat") { return false }
+        if type(mt.value.flat) != bool and mt.value.flat != auto { return false }
+
         return true
     })
 
@@ -101,7 +144,7 @@
         vertical2 = vertical1
     }
 
-    // 0.25em is require to adjust for the metadata placement
+    // 0.25em is required to adjust for the metadata placement
     let vertices = (
         (
             pos1.x + first.value.dx + size1.width/2.0, 
@@ -122,6 +165,11 @@
     )
 
     return [#meta#place(dx: -pos2.x, dy: -pos2.y, 
-        box(width: 0pt, height: 0pt, path(..vertices, stroke: options.stroke ))
+        box(width: 0pt, height: 0pt, curve(stroke: options.stroke, 
+            curve.move(vertices.at(0)),
+            curve.line(vertices.at(1)),
+            curve.line(vertices.at(2)),
+            curve.line(vertices.at(3)),
+        ))
     )#content]
 }

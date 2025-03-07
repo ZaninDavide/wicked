@@ -70,7 +70,7 @@ reasons."
 In the examples which follow we must suppose that the following preamble has been used.
 
 ```
-#import "@preview/wicked:0.1.0": wick
+#import "@preview/wicked:0.1.1": wick
 
 // Only used to make the examples shorter
 #set box(width: 20pt, height: 20pt, radius: 2pt)
@@ -138,7 +138,7 @@ $
 #wick(box(fill: orange), dx: -5pt)
 #h(30pt)
 #wick(pos: top, box(width: 30pt, height: 30pt, fill: red)) times 
-#wick(pos: top, dy: 10pt, box(fill: orange)) = 0
+#wick(pos: top, dy: 5pt, box(fill: orange)) = 0
 $
 ```
 $
@@ -146,7 +146,7 @@ $
 #wick(box(fill: orange), dx: -5pt)
 #h(30pt)
 #wick(pos: top, box(width: 30pt, height: 30pt, fill: red)) times 
-#wick(pos: top, dy: 10pt, box(fill: orange)) = 0
+#wick(pos: top, dy: 5pt, box(fill: orange)) = 0
 $
 A negative/positive `dx` moves the point left/right, while a negative/positive `dy` brings the point closer/further.
 
