@@ -109,7 +109,7 @@ $
 #wick(id: 1, box(fill: black))
 $
 
-The `id` is not required to be an integer; for example `string`s are another reasonable choice. That being said, integer `id`s have a special behaviour. Did you notice how the outer contraction in the last example automatically moved further away? When `id` is of type `int`, the distance of the contraction line, which is otherwise specified by the parameter `dist`, is instead computed as `dist * (1 + id / 2.0)`.
+The `id` is not required to be an integer; for example `string`s are another reasonable choice. That being said, integer `id`s have a special behavior. Did you notice how the outer contraction in the last example automatically moved further away? When `id` is of type `int`, the distance of the contraction line, which is otherwise specified by the parameter `dist`, is instead computed as `dist * (1 + id / 2.0)`.
 
 The `pos` parameter of the `wick` function allows the user to specify whether the contraction should be drawn above `pos: top` or below `pos: bottom` the equation. The default is to contract below.
 
@@ -131,13 +131,13 @@ $
 Only contraction points with the same value of `pos` can be contracted together, just like for `id`. Other then these two, there are no other constraints of which contraction points can be actually contracted. 
 
 == Point specific styling
-At the moment, the only point specific styling options are `dx` and `dy`, which shift the location where the contraction line starts.
+At the moment, the only point specific styling options are `dx` and `dy`, which shift the contraction point location.
 ```
 $
 #wick(box(fill: red), dx: 5pt)
 #wick(box(fill: orange), dx: -5pt)
 #h(30pt)
-#wick(pos: top, box(width: 30pt, height: 30pt, fill: red)) times 
+#wick(pos: top, box(fill: red)) times 
 #wick(pos: top, dy: 5pt, box(fill: orange)) = 0
 $
 ```
@@ -145,7 +145,7 @@ $
 #wick(box(fill: red), dx: 5pt)
 #wick(box(fill: orange), dx: -5pt)
 #h(30pt)
-#wick(pos: top, box(width: 30pt, height: 30pt, fill: red)) times 
+#wick(pos: top, box(fill: red)) times 
 #wick(pos: top, dy: 5pt, box(fill: orange)) = 0
 $
 A negative/positive `dx` moves the point left/right, while a negative/positive `dy` brings the point closer/further.
@@ -167,7 +167,7 @@ $
 #wick(box(fill: orange), stroke: blue)
 $
 
-Setting the `offset` parameter it's possible to specify the clearance between the contracted elements of the equation and the start of the contraction line.
+Setting the `offset` parameter, it's possible to specify the clearance between the contracted elements of the equation and the start of the contraction line.
 ```
 $
 #wick(box(fill: red))
@@ -178,15 +178,16 @@ $
 #wick(box(fill: red))
 #wick(box(fill: orange), offset: 0pt)
 $
+Since `dist` is the total vertical distance between the contracted element and the horizontal contraction line (up to the effect of the before mentioned special rule for integer `id`s), setting `offset` to a value bigger than `dist` should be avoided in normal circumstances.
 
 
 A boolean option called `flat` allows to specify whether the contraction line should be kept horizontal or not.
 
 ```
-#wick(pos:top, box(width: 30pt, height: 30pt, fill: red)) times 
+#wick(pos: top, box(width: 30pt, height: 30pt, fill: red)) times 
 #wick(pos: top, box(fill: orange)) = 0
 #h(30pt)
-#wick(pos:top, box(width: 30pt, height: 30pt, fill: red)) times 
+#wick(pos: top, box(width: 30pt, height: 30pt, fill: red)) times 
 #wick(pos: top, flat: false, box(fill: orange)) = 0
 ```
 
@@ -198,16 +199,16 @@ $
 #wick(pos: top, flat: false, box(fill: orange)) = 0
 $
 
-#figure(caption: [Parameters of the `wick` function],
-table(columns: 4, inset: 10pt, stroke: 0.5pt, align: left,
-  [*Option*], [*Type*], [*Default*], [*Shared*],
-  [`id`], [`any`], [`0`], [-], 
-  [`pos`], [`alignment`], [`bottom`], [-], 
-  [`dx`], [`length`], [`0pt`], [no], 
-  [`dy`], [`length`], [`0pt`], [no], 
-  [`dist`], [`length`], [`auto` is `0.5em`], [yes],     
-  [`offset`], [`length`], [`auto` is `0.25em`], [yes], 
-  [`stroke`], [`stroke`], [`auto` is `0.5pt`], [yes], 
-  [`flat`], [`bool`], [`auto` is `true`], [yes],  
-  [`content`], [`content`], [-], [-],  
+#figure(caption: [Input arguments of the `wick` function],
+table(columns: 5, inset: 10pt, stroke: 0.5pt, align: left,
+  [*Argument*], [*Positional*], [*Type*], [*Default*], [*Shared*],
+  [`id`], [no], [`any`], [`0`], [-], 
+  [`pos`], [no], [`alignment`], [`bottom`], [-], 
+  [`dx`], [no], [`length`], [`0pt`], [no], 
+  [`dy`], [no], [`length`], [`0pt`], [no], 
+  [`dist`], [no], [`length`], [`auto` is `0.5em`], [yes],     
+  [`offset`], [no], [`length`], [`auto` is `0.25em`], [yes], 
+  [`stroke`], [no], [`stroke`], [`auto` is `0.5pt`], [yes], 
+  [`flat`], [no], [`bool`], [`auto` is `true`], [yes],  
+  [`body`], [yes], [`content`], [-], [no],  
 ))
